@@ -45,7 +45,6 @@ class orderbook():
             self.bids = [x for x in self.bids if x.id != orderid]
         return success
 
-
     def remove_order(self, orderid, user):
         success=False
         removedorder = next((x for x in self.asks if x.id == orderid and x.name == user), None)     ##check order id and user s order
@@ -54,6 +53,22 @@ class orderbook():
 
         if(removedorder is None):
             removedorder = next((x for x in self.bids if x.id == orderid and x.name == user), None) 
+            if(removedorder is not None):
+                success=True
+
+        if(success):
+            self.asks = [x for x in self.asks if x.id != orderid]
+            self.bids = [x for x in self.bids if x.id != orderid]
+        return success
+
+    def remove_order_admin(self, orderid):
+        success=False
+        removedorder = next((x for x in self.asks if x.id == orderid), None)     ##check order id and user s order
+        if(removedorder is not None):
+            success=True
+
+        if(removedorder is None):
+            removedorder = next((x for x in self.bids if x.id == orderid), None) 
             if(removedorder is not None):
                 success=True
 

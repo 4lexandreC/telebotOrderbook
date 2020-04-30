@@ -82,6 +82,15 @@ def valid_cmd(words):
         valid=0
     return valid
 
+##check if admin
+def is_sender_admin(message):
+    user = message.from_user
+    chatmember = tbot.get_chat_member(message.chat.id, user.id)                      #get chat member and user group info
+    if(chatmember.status == 'administrator' or chatmember.status == 'creator'):
+        return True
+    else:
+        return False
+
 ##print orderbook in telegram chat
 @tbot.message_handler(commands=['orderbook'])
 def send_orderbook(message):
@@ -121,11 +130,15 @@ def send_sell(message):
 @tbot.message_handler(commands=['del'])
 def send_delete(message):
     words = message.text.split()
+    user = message.from_user
     if(valid_id(words)):
-        user = message.from_user.username
+        username = user.username
         orderid = int(words[1])
-        if(tauorderbook.remove_order(orderid,user)):
-            tbot.reply_to(message, "user {} deleted order n~{}".format(user,orderid))
+        if(is_sender_admin(message)):
+            tauorderbook.remove_order_admin(orderid)
+            tbot.reply_to(message, "admin deleted order n~{}".format(orderid))
+        elif(tauorderbook.remove_order(orderid,user)):
+            tbot.reply_to(message, "user {} deleted order n~{}".format(username,orderid))
 
 #close order by id ADMIN ONLY
 @tbot.message_handler(commands=['close'])
@@ -135,10 +148,10 @@ def send_close(message):
     chatmember = tbot.get_chat_member(message.chat.id, user.id)                      #get chat member and user group info
     if(chatmember.status == 'administrator' or chatmember.status == 'creator'):     #admin or creator
         if(valid_id(words)):
-            user = user.username
+            username = user.username
             orderid = int(words[1])
             if(tauorderbook.close_order(orderid)):
-                tbot.reply_to(message, "user {} closed his order n~{} TAU LAST PRICE {}$".format(user,orderid,tauorderbook._last))
+                tbot.reply_to(message, "user {} closed his order n~{} TAU LAST PRICE {}$".format(username,orderid,tauorderbook._last))
 
 ##check orderbook last price
 @tbot.message_handler(commands=['price'])
