@@ -57,7 +57,7 @@ def is_number(s):
 def valid_add(words):
     valid=0
     if(len(words) == 5):
-        if( is_number(words[1]) and is_number(words[2]) and (words[3] == 'a' or 'b' )):
+        if( is_number(words[1]) and is_number(words[2]) and ((words[3] == 'a') or (words[3] == 'b'))):
             valid=1
     else:
         valid=0
@@ -141,14 +141,13 @@ def send_sell(message):
 def send_add(message):
     words = message.text.split()
     if(valid_add(words) and is_sender_admin(message)):
-        user = message.from_user.username  
         amount = float(words[1])
         price = float(words[2])
-        name = str(words[3])
-        mode = str(words[4])
+        mode = str(words[3])
+        name = str(words[4])
         myorder = order(name, amount, price, mode)
         tauorderbook.add_order(myorder)
-        tbot.reply_to(message, "admin added order for {} with n~{} for {}TAU with price {}$ total {}$".format(user,myorder.id,amount,price,myorder.total))
+        tbot.reply_to(message, "admin added order for {} with n~{} for {}TAU with price {}$ total {}$".format(name,myorder.id,amount,price,myorder.total))
 
 #delete order by id USER S ORDER ONLY
 @tbot.message_handler(commands=['del'])
