@@ -53,6 +53,16 @@ def is_number(s):
         valid=False
     return valid
 
+##check parameters of taubot commands add
+def valid_add(words):
+    valid=0
+    if(len(words) == 5):
+        if( is_number(words[1]) and is_number(words[2]) and (words[3] == 'a' or 'b' )):
+            valid=1
+    else:
+        valid=0
+    return valid
+
 ##check parameters of taubot commands buy sell
 def valid_order(words):
     valid=0
@@ -125,6 +135,20 @@ def send_sell(message):
         myorder = order(user, amount, price,'a')
         tauorderbook.add_ask(myorder)
         tbot.reply_to(message, "user {} added sell order n~{} for {}TAU with price {}$ total {}$".format(user,myorder.id,amount,price,myorder.total))
+
+##admin add order
+@tbot.message_handler(commands=['add'])
+def send_add(message):
+    words = message.text.split()
+    if(valid_add(words) and is_sender_admin(message)):
+        user = message.from_user.username  
+        amount = float(words[1])
+        price = float(words[2])
+        name = str(words[3])
+        mode = str(words[4])
+        myorder = order(name, amount, price, mode, name)
+        tauorderbook.add_ask(myorder)
+        tbot.reply_to(message, "admin added order for {} with n~{} for {}TAU with price {}$ total {}$".format(user,myorder.id,amount,price,myorder.total))
 
 #delete order by id USER S ORDER ONLY
 @tbot.message_handler(commands=['del'])
