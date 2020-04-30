@@ -21,6 +21,12 @@ class orderbook():
     def last(self):
         return self._last
 
+    def add_order(self, order):
+        if(order.mode == 'a'):
+            self.asks.append(order)
+        elif(order.mode == 'b'):
+            self.bids.append(order)
+
     def add_ask(self, order):
         self.asks.append(order)     #add object end of list
 

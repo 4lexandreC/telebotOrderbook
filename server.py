@@ -146,8 +146,8 @@ def send_add(message):
         price = float(words[2])
         name = str(words[3])
         mode = str(words[4])
-        myorder = order(name, amount, price, mode, name)
-        tauorderbook.add_ask(myorder)
+        myorder = order(name, amount, price, mode)
+        tauorderbook.add_order(myorder)
         tbot.reply_to(message, "admin added order for {} with n~{} for {}TAU with price {}$ total {}$".format(user,myorder.id,amount,price,myorder.total))
 
 #delete order by id USER S ORDER ONLY
