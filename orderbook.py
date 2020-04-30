@@ -69,7 +69,8 @@ class orderbook():
  
     ##make order line in ascii for printing
     def make_order_line(self, order):
-        line = "{}, {}, {}TAU, ({}$tot),   {}$".format(order.id, order.name, order.amount, order.total, order.price)
+        orderstr = format(order.amount, ',').replace(',', ' ').replace('.', ',')
+        line = "{}, {}, {}TAU, ({}$tot),   {}$".format(order.id, order.name, orderstr, order.total, order.price)
         return line
 
     #refresh the orderbook, last, spread, makes the orderbook visuals with ask and bid list
