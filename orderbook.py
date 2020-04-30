@@ -123,7 +123,7 @@ class orderbook():
     def showascii(self):
         self.title =        "____________Tau Orderbook_____________"
         self.headers =      "ID,USER@,AMOUNT(TAU),  TOTAL$,PRICE$"
-        self.seperator =    "================{}==========={}==".format(self._last,self._spread)
+        self.seperator =    "================{}$==========={}==".format(self._last,self._spread)
         self.endline =      "______________________________________"
         self.visualtable = ""
         self.refresh()
